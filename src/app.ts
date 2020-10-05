@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import beautify from "js-beautify";
 import TelegramBot from "node-telegram-bot-api";
 
 /** load configs */
@@ -11,14 +12,8 @@ const bot = new TelegramBot(token, {
 });
 
 /** listen for events from bot */
-bot.onText(/\/format/, (message: any, match: any) => {
-  /**
-   * message : contains the actual body of the message
-   * match : result of executing regex on the above text content
-   */
+bot.onText(/ /i, (message: any, match: any) => {
   const chatId = message.chat.id;
-  const url = match.input.split(" ")[1];
-
-  console.log(`> Received message : ${url}`);
-  bot.sendMessage(chatId, "yeah, on it.");
+  bot.sendMessage(chatId, `yeah, ${message.from.first_name}.`);
+  bot.sendMessage(chatId, beautify(message.text));
 });
